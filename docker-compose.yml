@@ -1,0 +1,32 @@
+version: '3.6'
+services:
+
+  pharmacy-db:
+    image: "postgres"
+    container_name: pharmacy-db
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=pharmacy-db
+      - POSTGRES_USER=pharmacy
+      - POSTGRES_PASSWORD=pharmacy
+
+  pharmacy-app:
+    image: trajchevam/pharmacies-spring-boot-docker.jar:latest
+    container_name: pharmacy-app
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://pharmacy-db:5432/pharmacy
+      - SPRING_DATASOURCE_USERNAME=pharmacy
+      - SPRING_DATASOURCE_PASSWORD=pharmacy
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_SHOW_SQL=true
+    ports:
+      - "8080:8080"
+    depends_on:
+      - pharmacy-db
+
+volumes:
+  postgres-data:
+    driver: local

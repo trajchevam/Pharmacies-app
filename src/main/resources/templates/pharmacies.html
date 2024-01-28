@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pharmacies</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    div {
+      margin-bottom: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    .delete-product {
+      background-color: #ff5555;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .delete-product:hover {
+      background-color: #ff0000;
+    }
+
+    .add-pharmacy {
+      background-color: dodgerblue;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin-top: 20px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Pharmacies</h2>
+
+<div th:if="${hasError}" style="color: red;">
+  <p th:text="${error}"></p>
+</div>
+
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Address</th>
+    <th>Phone number</th>
+    <th>Open Hours</th>
+    <th>Action</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="pharmacy : ${pharmacies}">
+    <td th:text="${pharmacy.name}"></td>
+    <td th:text="${pharmacy.address}"></td>
+    <td th:text="${pharmacy.phoneNumber}"></td>
+    <td th:text="${pharmacy.openHours}"></td>
+    <td>
+      <form th:action="@{'/pharmacies/delete/{id}' (id=${pharmacy.getId()})}"
+            th:method="POST">
+        <button type="submit"
+                class="btn btn-sm btn-danger delete-product">
+          <i class="fa fa-trash">Delete</i>
+        </button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<a th:href="@{/pharmacies/addPharmacy}" class="add-pharmacy">Add Pharmacy</a>
+
+</body>
+</html>
