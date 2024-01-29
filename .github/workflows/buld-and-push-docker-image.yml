@@ -13,6 +13,11 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
+    - name: Build Spring Boot Application
+      run: |
+        chmod +x ./mvnw
+        ./mvnw clean package -DskipTests
+
     - name: Set DockerHub credentials
       run: |
         echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" >> $GITHUB_ENV
